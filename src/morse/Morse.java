@@ -18,37 +18,53 @@ public class Morse {
         DECODE_MODE
     }
 
-    Morse(String file_name, Mode mode){
+    public Morse(String file_name, Mode mode){
         try{
             buffer = "";
             reader = new InputStreamReader(new FileInputStream(file_name));
         } catch(IOException e){
             System.err.println("Error while reading file: " + e.getLocalizedMessage());
-        } finally {
-            try {
-                int c;
-                while ((c = reader.read()) != -1) {
-                    switch (mode) {
-                        case CODE_MODE:
-                            code((char)c);
-                        case DECODE_MODE:
-                            decode((char)c);
-                    }
-                    if(stat.containsKey(c)){
-                      int count = stat.get(c);
-                      stat.remove(c);
-                      ++count;
-                      stat.put((char) c, count);
-                      System.out.println(stat.size() + "\n");
-                    } else{
-                        stat.put((char) c, 1);
-                    }
-                }
+        }
 
-                reader.close();
-            } catch (IOException e){
-                e.printStackTrace(System.err);
+        try {
+            int c;
+            while ((c = reader.read()) != -1) {
+                switch (mode) {
+                    case CODE_MODE: code((char)c);
+                    case DECODE_MODE: decode((char)c);
+                }
+                statTaker(c);
             }
+            reader.close();
+        } catch (IOException e){
+            e.printStackTrace(System.err);
+        }
+
+    }
+
+    private void statTaker(int c){
+        if(stat.containsKey(c)){
+            int count = stat.get(c);
+            stat.remove(c);
+            ++count;
+            stat.put((char) c, count);
+            System.out.println(stat.size() + "\n");
+        } else{
+            stat.put((char) c, 1);
+        }
+    }
+
+    private void setMorse_dictionary(){
+        BufferedReader lib_getter;
+        try {
+            lib_getter = new BufferedReader(new FileReader("morse_dict.txt"));
+            String line = null;
+            while ((line = lib_getter.readLine()) != null){
+                String[] arr = line.split(" ");
+                morse_dictionary.put(arr[0].charAt(0), arr[1]);
+            }
+        } catch (IOException e){
+            e.printStackTrace(System.err);
         }
     }
     
