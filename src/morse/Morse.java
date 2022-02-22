@@ -26,4 +26,9 @@ public class Morse {
         Decode obj = new Decode(input_name, out_name);
         obj.translate();
     }
+
+    public void viewStat(String filename){
+        Statistics obj = new Statistics(filename, this.input_name);
+        obj.view();
+    }
 }

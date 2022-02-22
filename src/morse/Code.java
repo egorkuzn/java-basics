@@ -42,10 +42,12 @@ public class Code {
         } catch (IOException e){
             System.err.println(e.getLocalizedMessage());
         } finally {
-            try {
-                writer.close();
-            } catch (IOException e){
-                System.err.println(e.getLocalizedMessage());
+            if(writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace(System.err);
+                }
             }
         }
 
