@@ -16,13 +16,16 @@ public class Symbol{
 
     @Override
     public boolean equals(Object obj){
-        Symbol newSymb = (Symbol) obj;
-        boolean result = this.symbol == newSymb.symbol;
+        if(obj != null && obj.getClass() == Symbol.class) { //
+            Symbol newSymb = (Symbol) obj;
+            boolean result = this.symbol == newSymb.symbol;
 
-        count = Math.max(this.count, newSymb.count) + 1;
-        newSymb.count = this.count;
+            count = Math.max(this.count, newSymb.count) + 1;
+            newSymb.count = this.count;
 
-        return result;
+            return result;
+        } else
+            return false;
     }
 
     @Override
@@ -30,6 +33,7 @@ public class Symbol{
         return (int)symbol;
     }
 
+    @Override
     public final String toString(){
         String result = "";
 
